@@ -1,0 +1,9 @@
+{% extends 'problem_solving/base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-8 rounded shadow mt-10">
+    <h2 class="text-2xl font-bold mb-6 text-center">Welcome to your dashboard!</h2>
+    <p class="text-center">You are now logged in, {{ user.username }}.</p>
+</div>
+{% endblock %}

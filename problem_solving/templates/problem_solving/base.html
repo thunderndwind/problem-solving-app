@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Problem Solving App{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="bg-gray-800 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="text-white text-xl font-bold">Problem Solving App</a>
+            <nav>
+                <ul class="flex space-x-4 text-white">
+                    {% if user.is_authenticated %}
+                    <li><a href="/dashboard/" class="hover:underline">Dashboard</a></li>
+                    <li><a href="{% url 'logout' %}" class="hover:underline">Logout</a></li>
+
+                    {% else %}
+                    <li><a href="{% url 'login' %}" class="hover:underline">Login</a></li>
+                    <li><a href="{% url 'register' %}" class="hover:underline">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-8">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+
+</html>
