@@ -1,0 +1,15 @@
+{% extends 'problem_solving/base.html' %}
+
+{% block title %}Solution Result{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10">
+    <h1 class="text-2xl font-bold">Solution Result</h1>
+    {% if solution.passed %}
+    <p class="text-green-600 mt-4">Congratulations! Your solution passed all the test cases.</p>
+    {% else %}
+    <p class="text-red-600 mt-4">Sorry, your solution failed one or more test cases. Please try again.</p>
+    {% endif %}
+    <a href="{% url 'problem_list' %}" class="mt-6 inline-block text-blue-500 hover:underline">Back to Problems</a>
+</div>
+{% endblock %}

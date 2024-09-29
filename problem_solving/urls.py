@@ -22,9 +22,10 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    # path('login/', auth_views.LoginView.as_view(template_name='problem_solving/login.html'), name='login'),
+    path('problem_list/', views.problem_list, name='problem_list'),
+    path('problems/<int:pk>/', views.problem_detail, name='problem_detail'),
+    path('solution_result/<int:pk>/', views.solution_result, name='solution_result'),
     path('login/', views.CustomLoginView.as_view(), name='login'),
-    # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('logout/', views.custom_logout, name='logout'),
     path('register/', views.register, name='register'),
     path('dashboard/', views.dashboard, name='dashboard'),

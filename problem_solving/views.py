@@ -1,15 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import SimpleUserCreationForm
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-
+from .models import Problem, Solution
+from .forms import SolutionForm
+import subprocess
 
 def home(request):
     return render(request, 'problem_solving/home.html')
-
-
 
 def register(request):
     if request.method == 'POST':
@@ -38,3 +38,50 @@ def dashboard(request):
 def custom_logout(request):
     logout(request)
     return redirect('home')
+
+
+def problem_list(request):
+    problems = Problem.objects.all()
+    return render(request, 'problem_solving/problem_list.html', {'problems': problems})
+
+@login_required
+def problem_detail(request, pk):
+    problem = get_object_or_404(Problem, pk=pk)
+    if request.method == 'POST':
+        form = SolutionForm(request.POST)
+        if form.is_valid():
+            solution = form.save(commit=False)
+            solution.user = request.user
+            solution.problem = problem
+            solution.passed = evaluate_solution(problem, solution.code)
+            solution.save()
+            return redirect('solution_result', pk=solution.pk)
+    else:
+        form = SolutionForm()
+
+    return render(request, 'problem_solving/problem_detail.html', {'problem': problem, 'form': form})
+
+def solution_result(request, pk):
+    solution = get_object_or_404(Solution, pk=pk)
+    return render(request, 'problem_solving/solution_result.html', {'solution': solution})
+
+def evaluate_solution(problem, code):
+    test_cases = problem.test_cases
+    for test in test_cases:
+        input_data = test['input']
+        expected_output = test['output']
+        
+        try:
+            process = subprocess.run(
+                ['python3', '-c', code], 
+                input=input_data.encode(),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=5
+            )
+            result_output = process.stdout.decode().strip()
+            if result_output != expected_output:
+                return False
+        except Exception as e:
+            return False
+    return True

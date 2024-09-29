@@ -1,0 +1,18 @@
+{% extends 'problem_solving/base.html' %}
+
+{% block title %}Problem List{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-6">Available Problems</h1>
+    <ul class="space-y-4">
+        {% for problem in problems %}
+        <li>
+            <a href="{% url 'problem_detail' problem.pk %}" class="text-xl text-blue-500 hover:underline">
+                {{ problem.title }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'problem_solving/base.html' %}
+
+{% block title %}{{ problem.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10">
+    <h1 class="text-2xl font-bold">{{ problem.title }}</h1>
+    <p class="mt-4">{{ problem.description }}</p>
+    <h3 class="font-semibold mt-6">Example Input:</h3>
+    <pre>{{ problem.example_input }}</pre>
+    <h3 class="font-semibold mt-2">Example Output:</h3>
+    <pre>{{ problem.example_output }}</pre>
+
+    <h2 class="mt-8 font-bold text-xl">Submit Your Solution</h2>
+    <form method="POST" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
+    </form>
+</div>
+{% endblock %}
