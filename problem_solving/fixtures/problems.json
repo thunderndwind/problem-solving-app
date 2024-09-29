@@ -1,0 +1,61 @@
+[
+    {
+        "model": "problem_solving.problem",
+        "pk": 1,
+        "fields": {
+            "title": "Sum of Two Numbers",
+            "description": "Write a function that returns the sum of two numbers.",
+            "example_input": "Input: 3, 5",
+            "example_output": "Output: 8",
+            "test_cases": {
+                "inputs": [
+                    [
+                        3,
+                        5
+                    ],
+                    [
+                        10,
+                        20
+                    ],
+                    [
+                        0,
+                        0
+                    ]
+                ],
+                "outputs": [
+                    8,
+                    30,
+                    0
+                ]
+            }
+        }
+    },
+    {
+        "model": "problem_solving.problem",
+        "pk": 2,
+        "fields": {
+            "title": "Check Even or Odd",
+            "description": "Write a function that checks whether a number is even or odd.",
+            "example_input": "Input: 4",
+            "example_output": "Output: Even",
+            "test_cases": {
+                "inputs": [
+                    [
+                        4
+                    ],
+                    [
+                        7
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "outputs": [
+                    "Even",
+                    "Odd",
+                    "Even"
+                ]
+            }
+        }
+    }
+]

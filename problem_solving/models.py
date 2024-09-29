@@ -3,10 +3,10 @@ from django.contrib.auth.models import User
 
 class Problem(models.Model):
     title = models.CharField(max_length=200)
-    description = models.TextField()  # Problem statement
+    description = models.TextField()
     example_input = models.TextField()
     example_output = models.TextField()
-    test_cases = models.JSONField()  # Stores test cases as a JSON object (input/output pairs)
+    test_cases = models.JSONField()
 
     def __str__(self):
         return self.title

@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Problem, Solution
 from .forms import SolutionForm
+import json
 import subprocess
 
 def home(request):
@@ -39,7 +40,6 @@ def custom_logout(request):
     logout(request)
     return redirect('home')
 
-
 def problem_list(request):
     problems = Problem.objects.all()
     return render(request, 'problem_solving/problem_list.html', {'problems': problems})
@@ -59,29 +59,43 @@ def problem_detail(request, pk):
     else:
         form = SolutionForm()
 
-    return render(request, 'problem_solving/problem_detail.html', {'problem': problem, 'form': form})
+    return render(request, 'problem_solving/problem_details.html', {'problem': problem, 'form': form})
 
 def solution_result(request, pk):
     solution = get_object_or_404(Solution, pk=pk)
+    if not solution.passed: 
+        solution.passed = evaluate_solution(solution.problem, solution.code)
+        solution.save()
     return render(request, 'problem_solving/solution_result.html', {'solution': solution})
 
 def evaluate_solution(problem, code):
     test_cases = problem.test_cases
-    for test in test_cases:
-        input_data = test['input']
-        expected_output = test['output']
-        
+
+    inputs = test_cases.get('inputs', [])
+    outputs = test_cases.get('outputs', [])
+
+    if len(inputs) != len(outputs):
+        print("Error: Number of inputs and outputs do not match.")
+        return False
+
+    for i, input_data in enumerate(inputs):
+        expected_output = outputs[i]
+
+        input_str = ' '.join(map(str, input_data))
+
         try:
             process = subprocess.run(
                 ['python3', '-c', code], 
-                input=input_data.encode(),
+                input=input_str.encode(),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 timeout=5
             )
+
             result_output = process.stdout.decode().strip()
-            if result_output != expected_output:
+            if result_output != str(expected_output):
                 return False
         except Exception as e:
+            print(f"Exception occurred: {e}")
             return False
     return True
